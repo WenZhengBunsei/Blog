@@ -1,0 +1,15 @@
+﻿using Blog;
+using Microsoft.EntityFrameworkCore;
+
+namespace Blog.MVC
+{
+    public class BlogDBContext:DbContext
+    {
+        public DbSet<Article> Articles { get; set; }
+        public DbSet<ArticlePigeonholeClassification> PigeonholeClassifications { get; set; }
+        public DbSet<Attach> Attaches { get; set; }
+        public DbSet<UserAccount> AccountEntities { get; set; }
+        public DbSet<UserAccountInfo> AccountInfos { get; set; }
+        public DbSet<UserOpertionLog> OpertionLogs { get; set; }
+    }
+}

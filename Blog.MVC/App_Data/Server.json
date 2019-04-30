@@ -1,6 +1,0 @@
-﻿{
-  "ServerName": "Blog",
-  "Title": "Bunsei的博客",
-  "UploadFileMaxSize": 409600,
-  "UploadFileSavePostition": ""//保留空则使用默认路径。
-}
