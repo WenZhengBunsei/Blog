@@ -1,44 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Configuration;
-namespace Blog
+
+namespace Blog.Main
 {
-    public class Tools
+    public  class Tools
     {
         #region MD5
-        public static string GetStringMD5(string _str)
+        /// <summary>
+        /// 获得字符串的MD5值。
+        /// </summary>
+        /// <param name="str">需要获得MD5的字符串。</param>
+        /// <returns></returns>
+        public static string GetStringMd5(string str)
         {
-            using (MD5 md5 = MD5.Create())
+            using (var md5 = MD5.Create())
             {
-                byte[] data = md5.ComputeHash(Encoding.UTF8.GetBytes(_str));
+                var data = md5.ComputeHash(Encoding.UTF8.GetBytes(str));
 
-                StringBuilder sBuilder = new StringBuilder();
+                var sBuilder = new StringBuilder();
 
-                for (int i = 0; i < data.Length; i++)
+                foreach (var t in data)
                 {
-                    sBuilder.Append(data[i].ToString("x2"));
+                    sBuilder.Append(t.ToString("x2"));
                 }
                 return sBuilder.ToString();
             }
         }
-        public static string GetStreamMD5(Stream stream)
+        /// <summary>
+        /// 获得文件的MD5值。
+        /// </summary>
+        /// <param name="stream">文件流。</param>
+        /// <returns></returns>
+        public static string GetStreamMd5(Stream stream)
         {
-            using (MD5 md5 = MD5.Create())
+            using (var md5 = MD5.Create())
             {
-                byte[] data = md5.ComputeHash(stream);
+                var data = md5.ComputeHash(stream);
 
-                StringBuilder sBuilder = new StringBuilder();
+                var sBuilder = new StringBuilder();
 
-                for (int i = 0; i<data.Length; i++)
+                foreach (var t in data)
                 {
-                    sBuilder.Append(data[i].ToString("x2"));
+                    sBuilder.Append(t.ToString("x2"));
                 }
                 return sBuilder.ToString();
             }
@@ -46,15 +53,24 @@ namespace Blog
         #endregion
 
         #region Configs
-        public readonly static string ServerConfigsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "APP_Config", "Server.json");
-        public static Tools Configs { get; private set; } = new Tools();
-        private readonly JObject _jObject = null;
+        public readonly static string ServerConfigsPath = Path.Combine("APP_Data", "Server.json");
+        public static readonly string DatabaseFilePath = Path.Combine("APP_Data", "BlogDatabase.db");
+        public static readonly string RunttingLoggerPath = Path.Combine("APP_Data","RunningLogs");
+        public static readonly string UPLoadFilesPath = Path.Combine("APP_Data","Files");
+        public static Tools Configs => _tools ?? (_tools = new Tools());
+        private static Tools _tools = null;
+        private static JObject _jObject = null;
         private Tools()
         {
-            using (JsonReader _jsonReader = new JsonTextReader(new StreamReader(ServerConfigsPath, Encoding.UTF8)))
-                if (_jsonReader.Read())
-                    _jObject = JObject.Load(_jsonReader);
+            using (JsonReader jsonReader = new JsonTextReader(new StreamReader(ServerConfigsPath, Encoding.Default)))
+                if (jsonReader.Read())
+                    _jObject = JObject.Load(jsonReader);
         }
+        /// <summary>
+        /// 读取Server.json配置文件信息。
+        /// </summary>
+        /// <param name="key">JSON属性名。</param>
+        /// <returns></returns>
         public string this[string key]
         {
             get

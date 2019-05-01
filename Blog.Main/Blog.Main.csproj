@@ -9,14 +9,19 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design" Version="1.1.6" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <Folder Include="Html\" />
-    <Folder Include="APP_Configs\" />
-    <Folder Include="APP_Upload\" />
-    <Folder Include="APP_Log\" />
+    <Folder Include="APP_Data\Files\" />
+    <Folder Include="APP_Data\RunningLogs\" />
+    <Folder Include="Controllers\API\" />
+    <Folder Include="Views\Shared\" />
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>
